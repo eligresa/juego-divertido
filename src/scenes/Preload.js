@@ -6,6 +6,7 @@ import tuerca from "../assets/tuerca.svg"
 import cubitohielo from "../assets/cubito-hielo.svg"
 import estrella from "../assets/star.png"
 import meteorito from "../assets/fireball.svg"
+import glup from "../assets/glup.mp3"
 export default class Preload extends Phaser.Scene {
     constructor() {
         super("Preload")
@@ -18,6 +19,7 @@ export default class Preload extends Phaser.Scene {
         this.load.image("tuerca", tuerca)
         this.load.image("star", estrella)
         this.load.image("meteorito",meteorito)
+        this.load.audio("glup", glup)
     }
     create() {
         this.scene.start('Portada')

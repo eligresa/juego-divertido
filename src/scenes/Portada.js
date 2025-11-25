@@ -42,23 +42,21 @@ export default class Portada extends Phaser.Scene {
         })
 
         //Craemos los asset:
-        this.add.image(400,210,"robot").setScale(0.8,0.8)//robot
-        this.meteorito= this.add.image(780,10,"meteorito").setScale(0.8,0.8)
-         // Animación meteorito:
-        this.tweens.add({
-            targets: this.meteorito,
-            x: 10,
-            y:590,            
-            repeat: -1,
-            duration: 5000
-        })
-
-
+        this.add.image(400, 210, "robot").setScale(0.8, 0.8)//robot
 
         //Creamos los botones menú:
         this.createUIButton(400, 300, "Start", () => this.scene.start('Game'));
         this.createUIButton(400, 400, "Instrucciones", () => this.scene.start('Instrucciones'));
-        
+        this.meteorito = this.add.image(780, 10, "meteorito").setScale(0.8, 0.8)
+        // Animación meteorito:
+        this.tweens.add({
+            targets: this.meteorito,
+            x: 10,
+            y: 590,
+            repeat: -1,
+            duration: 5000
+        })
+
 
     }
 
