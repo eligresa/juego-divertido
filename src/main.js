@@ -4,6 +4,7 @@ import Portada from './scenes/Portada';
 import Game from './scenes/Game';
 import GameOver from './scenes/GameOver';
 import Instrucciones from './scenes/Instrucciones';
+import Preload from './scenes/Preload';
 const config = {
   type: Phaser.AUTO,
   backgroundColor: "#333",
@@ -16,7 +17,7 @@ const config = {
             debug: false
         }
       },
-  scene: [Game,Portada,GameOver,Instrucciones] // Aquí registras las escenas
+  scene: [Preload,Portada,Game,GameOver,Instrucciones] // Aquí registras las escenas
 
 }
 const game = new Phaser.Game(config);

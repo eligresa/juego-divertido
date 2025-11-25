@@ -1,12 +1,10 @@
-import ambiente from "../assets/arcade.mp3"
-import click from "../assets/click.mp3"
+
 export default class Portada extends Phaser.Scene {
     constructor() {
         super("Portada")
     }
     preload() {
-        this.load.audio("ambiente", ambiente)
-        this.load.audio("click", click)
+       
     }
     create() {
         this.title = this.add.text(400, 100, "Juego Divertido", {
@@ -26,7 +24,7 @@ export default class Portada extends Phaser.Scene {
         //Creamos los sonidos:
         this.click = this.sound.add("click")
         this.ambiente = this.sound.add("ambiente")
-        this.input.once("pointerdown",()=>{this.ambiente.play()})
+        this.input.once("pointerdown", () => { this.ambiente.play() })
 
     }
     createUIButton(x, y, label, callback) {
@@ -37,8 +35,8 @@ export default class Portada extends Phaser.Scene {
         //Creamos el fondo del boton:
         const bg = this.add.rectangle(x, y, width, height, 0xff0000, 1).setOrigin(0.5).setInteractive().setStrokeStyle(3, 0xffffff)
         const text = this.add.text(x, y, label, { fontSize: "24px", color: "#ffffff" }).setOrigin(0.5).setInteractive()
-        bg.on('pointerdown', () => {this.click.play(); callback() })
-        text.on('pointerdown', () => { this.click.play();callback() })
+        bg.on('pointerdown', () => { this.click.play(); callback() })
+        text.on('pointerdown', () => { this.click.play(); callback() })
 
     }
     update() { }

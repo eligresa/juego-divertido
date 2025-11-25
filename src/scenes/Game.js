@@ -1,10 +1,12 @@
 import robot from "../assets/robot.svg"
+import tuerca from "../assets/tuerca.svg"
 export default class Game extends Phaser.Scene {
     constructor() {
         super("Game")
     }
     preload() {
         this.load.image('robot',robot)
+        this.load.image('tuerca',tuerca)
      }
     create() {
         // this.add.text(400,300, "Estas jugando", {
@@ -14,9 +16,9 @@ export default class Game extends Phaser.Scene {
         const walls = this.physics.add.staticGroup();
         const mapa = [
             "################",
-            "#..............#",
-            "#..##..........#",
-            "#..##..........#",
+            "#....#..#..#..##",
+            "#.##...###.....#",
+            "#.##.#.......###",
             "##.....#####...#",
             "#..###.......###",
             "#......###.....#",
@@ -41,6 +43,7 @@ export default class Game extends Phaser.Scene {
         });
         //Colocamos el robot:
         this.add.image(400,300,"robot").setScale(0.5)
+        this.add.image(100,100,"tuerca").setScale(0.1)
 
 
 
