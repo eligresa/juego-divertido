@@ -6,12 +6,12 @@ export default class Game extends Phaser.Scene {
     create() {
         const mapa = [
             "################",
-            "#1...#..#..#..###",
-            "#.##...###.....#",
+            "#1...#..#..#0.###",
+            "#.##.0.###....0#",
             "#.##.#...0...###",
             "##.....#####...#",
-            "#..###.......###",
-            "#..0...###.....#",
+            "#0.###.......###",
+            "#..0...###....0#",
             "################"
         ];
         const tileW = this.scale.width / mapa[0].length;
@@ -31,9 +31,9 @@ export default class Game extends Phaser.Scene {
                         break;
                     }
                     case ".": {
-                        const tuerca = this.tuercas.create(px, py, 'tuerca').setScale(0.1);
-                        tuerca.body.setCircle(8);
-                        tuerca.refreshBody();
+                        const tuercas = this.tuercas.create(px, py, 'tuerca').setScale(0.1);
+                        tuercas.body.setCircle(8);
+                        tuercas.refreshBody();
                         break;
                     }
                     case "0": {
@@ -45,7 +45,7 @@ export default class Game extends Phaser.Scene {
                     case "1": {
                         // Un solo robot
                         this.robot = this.physics.add.sprite(px, py, 'robot');
-                        this.robot.setScale(0.38);
+                        this.robot.setScale(0.37);
                         break;
                     }
                 }
@@ -61,10 +61,14 @@ export default class Game extends Phaser.Scene {
         function tragarCubitosHielo(robot, hielo) {
             hielo.disableBody(true, true); // este es el cubito tocado
             this.glup.play();
+            this.vidas--
+            this.actualizarTexto()
         }
         function tragarTuercas(robot, tuerca) {
             tuerca.disableBody(true, true); // esta es la tuerca tocada
-            this.glup.play();
+            this.glup.play();         
+            this.puntos++
+            this.actualizarTexto()
         }
 
         //Creamos los cursores:
@@ -73,7 +77,18 @@ export default class Game extends Phaser.Scene {
         //Creamos la puntuación y el texto:
         this.puntos = 0
         this.vidas = 3
-        this.add.text(10, 10, `Puntos:${this.puntos} Vidas:${this.vidas}`, { color: "black", fontSize: 36 })
+        this.tiempo=60;
+        this.puntosVidas = this.add.text(10, 10, "", { color: "black", fontSize: 32 })
+
+        //Actializamos texto:
+        this.actualizarTexto = () => {
+            this.puntosVidas.setText(`Puntos: ${this.puntos} Vidas: ${this.vidas} Tiempo:${this.tiempo}`);
+            if(this.vidas<=0 || this.tiempo<=0 ){
+            this.scene.start('GameOver')
+        }
+        };
+        this.actualizarTexto();
+        
     }
 
     update() {
@@ -92,7 +107,10 @@ export default class Game extends Phaser.Scene {
         else if (this.cursors.down.isDown) {
             this.robot.setVelocityY(speed);
         }
+        //El tiempo disminuye:
+       this.tiempo=Math.floor(this.tiempo -0.01)
     }
+
 }
 
 
