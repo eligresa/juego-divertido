@@ -1,12 +1,15 @@
+import { createUIButtonSmall } from "../utilidades/Botones";
+import { createBtn } from "../utilidades/btn";
 export default class Game extends Phaser.Scene {
     constructor() {
         super("Game");
     }
+
     preload() { }
     create() {
         const mapa = [
             "################",
-            "#1...#..#..#..###",
+            "#1...#..#..#..##",
             "#.##.0.###.....#",
             "#.##.#...0...###",
             "##.....#####...#",
@@ -14,12 +17,13 @@ export default class Game extends Phaser.Scene {
             "#..0...###.....#",
             "################"
         ];
-        const tileW = this.scale.width / mapa[0].length;
-        const tileH = this.scale.height / mapa.length;
+        const tileW = this.game.config.width / mapa[0].length;
+        const tileH = this.game.config.height / mapa.length;
         // Guardamos grupos en la escena
         this.walls = this.physics.add.staticGroup();
         this.tuercas = this.physics.add.staticGroup();
         this.cubitoshielo = this.physics.add.staticGroup();
+
         mapa.forEach((fila, y) => {
             fila.split("").forEach((c, x) => {
                 const px = x * tileW + tileW / 2;
@@ -37,7 +41,7 @@ export default class Game extends Phaser.Scene {
                         break;
                     }
                     case "0": {
-                        const cbt = this.cubitoshielo.create(px, py, 'cubitohielo').setScale(0.2);
+                        const cbt = this.cubitoshielo.create(px, py, 'cubito').setScale(0.2);
                         cbt.body.setCircle(8);
                         cbt.refreshBody();
                         break;
@@ -45,7 +49,7 @@ export default class Game extends Phaser.Scene {
                     case "1": {
                         // Un solo robot
                         this.robot = this.physics.add.sprite(px, py, 'robot');
-                        this.robot.setScale(0.37);
+                        this.robot.setScale(0.33);
                         break;
                     }
                 }
@@ -58,15 +62,17 @@ export default class Game extends Phaser.Scene {
         this.physics.add.overlap(this.robot, this.tuercas, tragarTuercas, null, this);
         this.physics.add.overlap(this.robot, this.cubitoshielo, tragarCubitosHielo, null, this);
         this.glup = this.sound.add('glup')
+
         function tragarTuercas(robot, tuerca) {
             tuerca.disableBody(true, true); // esta es la tuerca tocada
             this.glup.play();
             //robot.setTint('0xff0000')
             this.puntos++
             this.actualizarTexto()
+
         }
-        function tragarCubitosHielo(robot, cubitoshielo) {
-            cubitoshielo.disableBody(true, true); // este es el cubito tocado
+        function tragarCubitosHielo(robot, hielo) {
+            hielo.disableBody(true, true); // este es el cubito tocado
             this.glup.play();
             this.vidas--
             this.actualizarTexto()
@@ -76,19 +82,37 @@ export default class Game extends Phaser.Scene {
         //puntos y vidas
         // HUD
         this.puntos = 0;
-        this.vidas = 2;
-        this.tiempo=60;
+        this.vidas = 4;
+        this.tiempo = 120;
+
         this.puntosVidas = this.add.text(10, 10, "", {
             color: "maroon",
             fontSize: 32
         });
+
+
         this.actualizarTexto = () => {
             this.puntosVidas.setText(`Puntos: ${this.puntos}   Vidas: ${this.vidas} Tiempo: ${Math.floor(this.tiempo)} `);
-            if (this.vidas <= 0||this.tiempo<=0) {
+            if (this.vidas <= 0 || this.tiempo <= 0) {
                 this.scene.start('GameOver')
+
+            }
+            if (this.walls.length == 0) {
+                this.add.text(100, 100, "Ganaste Campeon", {})
+
             }
         };
+
         this.actualizarTexto();
+
+        // //// botonera
+        // createUIButtonSmall(this,100,this.game.config.height-40,"⏯️", ()=>{console.log('Parar')})
+        // createUIButtonSmall(this,200,this.game.config.height-40,"ℹ️", ()=>{console.log('Parar')})
+        // createUIButtonSmall(this,300,this.game.config.height-40,"🔊", ()=>{console.log('Parar')})      
+
+        createBtn(this, 100, this.game.config.height - 40, "ℹ️", () => { this.scene.start("Instrucciones") })
+
+
     }
     update(time, delta) {
         const speed = 160;
@@ -108,15 +132,6 @@ export default class Game extends Phaser.Scene {
         }
         // el tiempo disminuye
         // this.tiempo= this.tiempo - 0.01
-        this.tiempo-=delta/1000
+        this.tiempo -= delta / 1000
     }
 }
-
-
-
-
-
-
-
-
-

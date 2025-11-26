@@ -1,16 +1,14 @@
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+body{
   max-width: 100%;
 }
-
-canvas {
+canvas{
+  display:block;
+  margin:1em auto;
   overflow: hidden;
-  margin: 1em auto;
-  display: block;
-
 }
